@@ -42,6 +42,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureVault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/blbinputfile')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -65,23 +78,60 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureVault')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/ds_onpremisefiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blbinputfile",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folderpath": {
+						"type": "string",
+						"defaultValue": "onpremisefiles"
+					}
+				},
 				"annotations": [],
-				"type": "AzureKeyVault",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"baseUrl": "[parameters('AzureVault_properties_typeProperties_baseUrl')]"
-				}
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('DayTransaction_',formatDateTime(utcnow(),'yyyy-MM-dd'))",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().folderpath",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blbinputfile')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/onpremise')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"parameters": {
+					"DatabaseName": {
+						"type": "String",
+						"defaultValue": "ADFLearning"
+					}
+				},
 				"annotations": [],
 				"type": "SqlServer",
 				"typeProperties": {
@@ -103,41 +153,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/ADF-Snowflake-IR')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_onpremisefiles')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blbinputfile",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat('DayTransaction_',string(formatDateTime(utcnow())))",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@formatDateTime(utcnow())",
-							"type": "Expression"
-						},
-						"container": "onpremisefiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blbinputfile')]"
 			]
 		},
 		{
@@ -329,7 +344,12 @@
 							{
 								"referenceName": "ds_onpremisefiles",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folderpath": {
+										"value": "@pipeline().parameters.P_Folderpath",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					}
@@ -337,6 +357,16 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"P_Folderpath": {
+						"type": "string",
+						"defaultValue": "onpremisefiles"
+					},
+					"P_DatabaseName": {
+						"type": "string",
+						"defaultValue": "ADFLearning"
+					}
 				},
 				"annotations": []
 			},
