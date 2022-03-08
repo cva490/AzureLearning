@@ -217,10 +217,6 @@
 					"P_Folderpath": {
 						"type": "string",
 						"defaultValue": "onpremisefiles"
-					},
-					"P_DatabaseName": {
-						"type": "string",
-						"defaultValue": "ADFLearning"
 					}
 				},
 				"annotations": []
@@ -237,7 +233,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "onpremise",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DatabaseName": "ADFLearning"
+					}
 				},
 				"annotations": [],
 				"type": "SqlServerTable",
