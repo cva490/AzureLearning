@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "dsonpremise",
+						"referenceName": "AzureDatabase",
 						"type": "DatasetReference"
 					},
 					"name": "AzureSource"
@@ -23,10 +23,21 @@
 			],
 			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          {S No.} as short,",
+				"          {Value Date} as string,",
+				"          {Transaction Date} as string,",
+				"          {Cheque Number} as string,",
+				"          {Transaction Remarks} as string,",
+				"          {Withdrawal Amount (INR )} as double,",
+				"          {Deposit Amount (INR )} as double,",
+				"          {Balance (INR )} as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
 				"     ignoreNoFilesFound: false,",
-				"     wildcardPaths:['*.xls*']) ~> BlobSource",
+				"     wildcardPaths:['*.csv']) ~> BlobSource",
 				"BlobSource sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -35,7 +46,18 @@
 				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> AzureSource"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          {S No#} = {S No.},",
+				"          {Value Date},",
+				"          {Transaction Date},",
+				"          {Cheque Number},",
+				"          {Transaction Remarks},",
+				"          {Withdrawal Amount (INR )},",
+				"          {Deposit Amount (INR )},",
+				"          {Balance (INR )}",
+				"     )) ~> AzureSource"
 			]
 		}
 	}
