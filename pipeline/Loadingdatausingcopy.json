@@ -1,0 +1,165 @@
+{
+	"name": "Loadingdatausingcopy",
+	"properties": {
+		"activities": [
+			{
+				"name": "Blobtoonpremise",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*csv",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "S No.",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "S No#",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Value Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Value Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cheque Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Cheque Number",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction Remarks",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction Remarks",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Withdrawal Amount (INR )",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Withdrawal Amount (INR )",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 10,
+									"precision": 32
+								}
+							},
+							{
+								"source": {
+									"name": "Deposit Amount (INR )",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Deposit Amount (INR )",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 10,
+									"precision": 32
+								}
+							},
+							{
+								"source": {
+									"name": "Balance (INR )",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Balance (INR )",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 10,
+									"precision": 32
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "dsLanding",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dsonpremise",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
