@@ -14,10 +14,6 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "AzureDatabase",
-						"type": "DatasetReference"
-					},
 					"name": "AzureSource"
 				}
 			],
@@ -40,14 +36,8 @@
 				"     wildcardPaths:['*.csv']) ~> BlobSource",
 				"BlobSource sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          {S No#} = {S No.},",
 				"          {Value Date},",
