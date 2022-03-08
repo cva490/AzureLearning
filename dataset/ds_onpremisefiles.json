@@ -24,7 +24,10 @@
 					"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
 					"type": "Expression"
 				},
-				"container": "onpremisefiles"
+				"container": {
+					"value": "@dataset().folderpath",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
