@@ -5,6 +5,12 @@
 			"referenceName": "onpremise",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Databasename": {
+				"type": "string",
+				"defaultValue": "ADFLearning"
+			}
+		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": []
