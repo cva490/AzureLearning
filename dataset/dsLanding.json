@@ -1,0 +1,25 @@
+{
+	"name": "dsLanding",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blbinputfile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('Data_',string(formatDateTime(utcnow())))",
+					"type": "Expression"
+				},
+				"container": "inputfiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
