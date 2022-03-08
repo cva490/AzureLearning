@@ -165,7 +165,13 @@
 				"outputs": [
 					{
 						"referenceName": "ds_onpremisefiles",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folderpath": {
+								"value": "@pipeline().parameters.P_Folderpath",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
