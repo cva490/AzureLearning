@@ -37,8 +37,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "S No.",
-									"type": "String",
+									"name": "S No#",
 									"physicalType": "String"
 								},
 								"sink": {
