@@ -11,11 +11,11 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('DayTransaction_',formatDateTime(utcnow(),'yyyy-mm-dd'))",
+					"value": "@concat('DayTransaction_',formatDateTime(utcnow(),'yyyy-MM-dd'))",
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@formatDateTime(utcnow(),'yyyy-mm-dd')",
+					"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
 					"type": "Expression"
 				},
 				"container": "onpremisefiles"
