@@ -47,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(variables('CheckingRecordcount').value,0)",
+						"value": "@greater(activity('HasData').output.value,0)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
