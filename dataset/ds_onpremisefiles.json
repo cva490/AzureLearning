@@ -1,0 +1,29 @@
+{
+	"name": "ds_onpremisefiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blbinputfile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('DayTransaction_',string(formatDateTime(utcnow())))",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@formatDateTime(utcnow())",
+					"type": "Expression"
+				},
+				"container": "onpremisefiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
