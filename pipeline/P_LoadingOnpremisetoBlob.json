@@ -244,11 +244,6 @@
 				"defaultValue": "ADFLearning"
 			}
 		},
-		"variables": {
-			"CheckingRecordcount": {
-				"type": "Boolean"
-			}
-		},
 		"annotations": []
 	}
 }
