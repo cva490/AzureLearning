@@ -159,7 +159,13 @@
 				"inputs": [
 					{
 						"referenceName": "ds_onpremiseSQL",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_DatabaseName": {
+								"value": "@pipeline().parameters.P_DatabaseName",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -180,6 +186,9 @@
 			"P_Folderpath": {
 				"type": "string",
 				"defaultValue": "onpremisefiles"
+			},
+			"P_DatabaseName": {
+				"type": "String"
 			}
 		},
 		"annotations": []
