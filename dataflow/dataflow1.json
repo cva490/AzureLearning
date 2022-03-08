@@ -1,0 +1,42 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dsLanding",
+						"type": "DatasetReference"
+					},
+					"name": "BlobSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dsonpremise",
+						"type": "DatasetReference"
+					},
+					"name": "AzureSource"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['*.xls*']) ~> BlobSource",
+				"BlobSource sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> AzureSource"
+			]
+		}
+	}
+}
