@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('DayTransaction_',string(formatDateTime(utcnow(),'yyyy-mm-dd')))",
+					"value": "@concat('DayTransaction_',formatDateTime(utcnow(),'yyyy-mm-dd'))",
 					"type": "Expression"
 				},
 				"folderPath": {
