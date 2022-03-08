@@ -13,6 +13,9 @@
 		},
 		"onpremise_connectionString": {
 			"value": ""
+		},
+		"AzureVault_properties_typeProperties_baseUrl": {
+			"value": "https://CommanPasswords.vault.azure.net/"
 		}
 	}
 }
