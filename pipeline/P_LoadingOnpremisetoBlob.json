@@ -180,10 +180,6 @@
 			"P_Folderpath": {
 				"type": "string",
 				"defaultValue": "onpremisefiles"
-			},
-			"P_DatabaseName": {
-				"type": "string",
-				"defaultValue": "ADFLearning"
 			}
 		},
 		"annotations": []
