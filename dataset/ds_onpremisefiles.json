@@ -15,7 +15,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@formatDateTime(utcnow())",
+					"value": "@formatDateTime(utcnow(),'yyyy-mm-dd')",
 					"type": "Expression"
 				},
 				"container": "onpremisefiles"
