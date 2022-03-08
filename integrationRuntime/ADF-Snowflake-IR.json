@@ -1,0 +1,6 @@
+{
+	"name": "ADF-Snowflake-IR",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
