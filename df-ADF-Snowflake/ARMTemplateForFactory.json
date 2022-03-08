@@ -35,8 +35,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "OnpremisetoBlob",
-						"type": "Copy",
+						"name": "HasData",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -45,168 +45,225 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "OnPremise SQL Server"
-							},
-							{
-								"name": "Destination",
-								"value": "onpremisefiles/@{formatDateTime(utcnow())}/@{concat('DayTransaction_',string(formatDateTime(utcnow())))}"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "select  [S No#], \nconvert(date,[Value Date],105) as [Value Date], \nconvert(date,[Transaction Date],105) [Transaction Date], \n[Cheque Number], \n[Transaction Remarks], \n[Withdrawal Amount (INR )], \n[Deposit Amount (INR )], \n[Balance (INR )]\nfrom [dbo].[BanktransactionDetail]\nwhere dateadd(day,365,convert(date,[Transaction Date],105))=convert(date,getdate(),105)",
+								"sqlReaderQuery": "\nselect  Count(1) as RecordCount\nfrom [dbo].[BanktransactionDetail]\nwhere dateadd(day,365,convert(date,[Transaction Date],105))=convert(date,getdate(),105)",
 								"queryTimeout": "02:00:00",
-								"isolationLevel": "ReadCommitted",
 								"partitionOption": "None"
 							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "S No#",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "S No#",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Value Date",
-											"type": "DateTime",
-											"physicalType": "date"
-										},
-										"sink": {
-											"name": "Value Date",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Transaction Date",
-											"type": "DateTime",
-											"physicalType": "date"
-										},
-										"sink": {
-											"name": "Transaction Date",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Cheque Number",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Cheque Number",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Transaction Remarks",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Transaction Remarks",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Withdrawal Amount (INR )",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 10,
-											"precision": 32
-										},
-										"sink": {
-											"name": "Withdrawal Amount (INR )",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Deposit Amount (INR )",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 10,
-											"precision": 32
-										},
-										"sink": {
-											"name": "Deposit Amount (INR )",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Balance (INR )",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 10,
-											"precision": 32
-										},
-										"sink": {
-											"name": "Balance (INR )",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
+							"dataset": {
 								"referenceName": "ds_onpremiseSQL",
 								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_onpremisefiles",
-								"type": "DatasetReference",
 								"parameters": {
-									"folderpath": {
-										"value": "@pipeline().parameters.P_Folderpath",
+									"ds_DatabaseName": {
+										"value": "@pipeline().parameters.P_DatabaseName",
 										"type": "Expression"
 									}
 								}
 							}
-						]
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "HasData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(activity('HasData').firstRow.RecordCount,0)",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "OnpremisetoBlob",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "OnPremise SQL Server"
+										},
+										{
+											"name": "Destination",
+											"value": "onpremisefiles/@{formatDateTime(utcnow())}/@{concat('DayTransaction_',string(formatDateTime(utcnow())))}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": "select  [S No#], \nconvert(date,[Value Date],105) as [Value Date], \nconvert(date,[Transaction Date],105) [Transaction Date], \n[Cheque Number], \n[Transaction Remarks], \n[Withdrawal Amount (INR )], \n[Deposit Amount (INR )], \n[Balance (INR )]\nfrom [dbo].[BanktransactionDetail]\nwhere dateadd(day,365,convert(date,[Transaction Date],105))=convert(date,getdate(),105)",
+											"queryTimeout": "02:00:00",
+											"isolationLevel": "ReadCommitted",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "S No#",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "S No#",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Value Date",
+														"type": "DateTime",
+														"physicalType": "date"
+													},
+													"sink": {
+														"name": "Value Date",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Transaction Date",
+														"type": "DateTime",
+														"physicalType": "date"
+													},
+													"sink": {
+														"name": "Transaction Date",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Cheque Number",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Cheque Number",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Transaction Remarks",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Transaction Remarks",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Withdrawal Amount (INR )",
+														"type": "Decimal",
+														"physicalType": "decimal",
+														"scale": 10,
+														"precision": 32
+													},
+													"sink": {
+														"name": "Withdrawal Amount (INR )",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Deposit Amount (INR )",
+														"type": "Decimal",
+														"physicalType": "decimal",
+														"scale": 10,
+														"precision": 32
+													},
+													"sink": {
+														"name": "Deposit Amount (INR )",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Balance (INR )",
+														"type": "Decimal",
+														"physicalType": "decimal",
+														"scale": 10,
+														"precision": 32
+													},
+													"sink": {
+														"name": "Balance (INR )",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_onpremiseSQL",
+											"type": "DatasetReference",
+											"parameters": {
+												"ds_DatabaseName": {
+													"value": "@pipeline().parameters.P_DatabaseName",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_onpremisefiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"folderpath": {
+													"value": "@pipeline().parameters.P_Folderpath",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -217,6 +274,10 @@
 					"P_Folderpath": {
 						"type": "string",
 						"defaultValue": "onpremisefiles"
+					},
+					"P_DatabaseName": {
+						"type": "String",
+						"defaultValue": "ADFLearning"
 					}
 				},
 				"annotations": []
@@ -235,7 +296,15 @@
 					"referenceName": "onpremise",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"DatabaseName": "ADFLearning"
+						"DatabaseName": {
+							"value": "@dataset().ds_DatabaseName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"ds_DatabaseName": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
