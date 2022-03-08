@@ -13,7 +13,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "OnPremise SQL Server"
+					},
+					{
+						"name": "Destination",
+						"value": "onpremisefiles/@{formatDateTime(utcnow())}/@{concat('DayTransaction_',string(formatDateTime(utcnow())))}"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
