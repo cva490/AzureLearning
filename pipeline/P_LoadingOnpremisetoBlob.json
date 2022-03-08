@@ -47,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(activity('HasData').firstRow.RecordCount,0)",
+						"value": "@greater(activity('HasData').output.firstRow.RecordCount,0)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
