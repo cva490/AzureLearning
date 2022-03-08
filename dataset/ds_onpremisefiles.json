@@ -5,6 +5,12 @@
 			"referenceName": "blbinputfile",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"folderpath": {
+				"type": "string",
+				"defaultValue": "onpremisefiles"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
