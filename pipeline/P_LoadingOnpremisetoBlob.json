@@ -53,9 +53,9 @@
 									"physicalType": "int"
 								},
 								"sink": {
+									"name": "S No#",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 1
+									"physicalType": "String"
 								}
 							},
 							{
@@ -65,9 +65,9 @@
 									"physicalType": "date"
 								},
 								"sink": {
+									"name": "Value Date",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 2
+									"physicalType": "String"
 								}
 							},
 							{
@@ -77,9 +77,9 @@
 									"physicalType": "date"
 								},
 								"sink": {
+									"name": "Transaction Date",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 3
+									"physicalType": "String"
 								}
 							},
 							{
@@ -89,9 +89,9 @@
 									"physicalType": "varchar"
 								},
 								"sink": {
+									"name": "Cheque Number",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 4
+									"physicalType": "String"
 								}
 							},
 							{
@@ -101,9 +101,9 @@
 									"physicalType": "varchar"
 								},
 								"sink": {
+									"name": "Transaction Remarks",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 5
+									"physicalType": "String"
 								}
 							},
 							{
@@ -115,9 +115,9 @@
 									"precision": 32
 								},
 								"sink": {
+									"name": "Withdrawal Amount (INR )",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 6
+									"physicalType": "String"
 								}
 							},
 							{
@@ -129,9 +129,9 @@
 									"precision": 32
 								},
 								"sink": {
+									"name": "Deposit Amount (INR )",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 7
+									"physicalType": "String"
 								}
 							},
 							{
@@ -143,9 +143,9 @@
 									"precision": 32
 								},
 								"sink": {
+									"name": "Balance (INR )",
 									"type": "String",
-									"physicalType": "String",
-									"ordinal": 8
+									"physicalType": "String"
 								}
 							}
 						],
