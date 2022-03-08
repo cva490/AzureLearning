@@ -1,10 +1,16 @@
 {
 	"name": "onpremise",
 	"properties": {
+		"parameters": {
+			"DatabaseName": {
+				"type": "String",
+				"defaultValue": "ADFLearning"
+			}
+		},
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Data Source=DESKTOP-NTTCE9M;Initial Catalog=ADFLearning;User ID=siva",
+			"connectionString": "Integrated Security=False;Data Source=DESKTOP-NTTCE9M;Initial Catalog=@{linkedService().DatabaseName};User ID=siva",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
