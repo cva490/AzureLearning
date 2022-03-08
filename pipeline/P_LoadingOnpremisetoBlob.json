@@ -188,7 +188,8 @@
 				"defaultValue": "onpremisefiles"
 			},
 			"P_DatabaseName": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "ADFLearning"
 			}
 		},
 		"annotations": []
