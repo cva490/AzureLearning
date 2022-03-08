@@ -1,0 +1,16 @@
+{
+	"name": "onpremise",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=DESKTOP-NTTCE9M;initial catalog=ADFLearning;user id=siva",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlZmRmMTg5My0zNWU2LTQ0OGQtYTM2ZC02ZDliN2JhYWQ2NGIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "ADF-Snowflake-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
