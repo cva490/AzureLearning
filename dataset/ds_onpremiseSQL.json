@@ -3,7 +3,18 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "onpremise",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DatabaseName": {
+					"value": "@dataset().ds_DatabaseName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"ds_DatabaseName": {
+				"type": "String"
+			}
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
